@@ -87,8 +87,6 @@ var util = {
 			retOptions['body'] = JSON.stringify(dataObj);
 		}
 
-		console.log(retOptions);
-
 		return retOptions;
 	},
 
