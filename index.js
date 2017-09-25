@@ -12,7 +12,7 @@ const readline = require('readline');
 const ConfigFile = require('./ConfigFile.js');
 const DGApi = require('./DGApi.js');
 
-var configFile = new ConfigFile('./config.json');
+var configFile = new ConfigFile(__dirname + '/config.json');
 
 // get access token as set in environment variable
 const access_token = process.env.DIGITALOCEAN_ACCESS_TOKEN;
