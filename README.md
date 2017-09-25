@@ -51,6 +51,8 @@ DigitalOcean takes some time to create a snapshot.
 
 From my experience, 30GB in size of server will take almost 20 minutes. During this time, if you try to list all snapshots for Droplet Id, you won't get any which is in-creating progress. So keep in mind to take this period as a non-safe period to execute any script as the script cannot know whether there's any snapshots in creating.
 
+Billing for snapshots also starts from snapshot creation time. Thus be decisive of how frequently you backup, and how many old snapshots you would like to hold with this project. Larger in size snapshot will take longer time to create as well; although cost might be neglectible.
+
 # What's Next?
 
 * Make getting Droplet Ids more comfortable and less effort to get. Ideally doesn't involve user to execute API by himself/herself.
