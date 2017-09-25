@@ -37,14 +37,39 @@ try {
 const dropletIds = configFile.dropletIds;
 const holdSnapshots = configFile.holdSnapshots;
 
+// see promise-synclook.js for this function signature detail
+// deleteFn is for deleting oldest snapshot task one by one
+var deleteFn = function(i, ...args) {
+
+	// get snapshots parameter
+	var snapshots = args[0];
+
+	return new Promise((resolve, reject) => {
+		// snapshots object is the same, thus we moving index ourselves via i
+		var oldestSnapshotId = snapshots[snapshots.length-1-i].id;
+		// delete oldest snapshot
+		console.log('Deleting oldest snapshot (id:' + oldestSnapshotId + ')');
+		Promise.retry(3, dgApi.deleteSnapshotById.bind(dgApi), 3000, oldestSnapshotId)
+			.then((_result) => {
+				console.log('Deleted snapshot (id: ' + oldestSnapshotId + ')');
+				resolve();	// resolve the task
+			})
+			.catch((_err) => {
+				console.log(_err.message);
+				reject(); // reject this task
+			});
+	});
+}
+
 // see promise-syncloop.js for this function signature detail
+// workerFn is for main task for individual snapshot involving
+// getting list of snapshots, deleting snapshots (if need), and snapshot a droplet
 var workerFn = function(i, ...args) {
 	return new Promise((resolve, reject) => {
 		// get id from droplet
 		const dropletId = dropletIds[i];
 
 		var snapshots = null;
-		var path = 1;
 
 		// now we got dropletIds in memory of our configFile
 		console.log('Getting list of snapshots for dropletId (id:' + dropletId + ')');
@@ -54,39 +79,40 @@ var workerFn = function(i, ...args) {
 				snapshots = resultObj.snapshots;
 				console.log(snapshots);
 
-				// check if we need to delete the oldest snapshot
-				// to make room for a new one
-				if (snapshots && snapshots.length >= holdSnapshots) {
-					var oldestSnapshotId = snapshots[snapshots.length-1].id;
-					// delete oldest snapshot
-					console.log('Deleting oldest snapshot (id:' + oldestSnapshotId + ')');
-					Promise.retry(3, dgApi.deleteSnapshotById.bind(dgApi), 3000, oldestSnapshotId)
-						.then((_result) => {
-							console.log('Deleted oldest snapshot');
-						})
-						.then(() => {
-							// snapshot a droplet
-							console.log('Snapshotting for droplet (id:' + dropletId + ')');
-							path = 2;
-							return Promise.retry(3, dgApi.snapshotDroplet.bind(dgApi), 3000, dropletId);
-						})
-						.catch((_err) => {
-							console.log(_err.message);
-							reject(); // reject this task
-						});
-				}
-				else {
-					// snapshot a droplet
-					console.log('Snapshotting for droplet (id:' + dropletId + ')');
-					path = 2;
-					return Promise.retry(3, dgApi.snapshotDroplet.bind(dgApi), 3000, dropletId);
-				}
+				// this promise is to wrap the branching of logic
+				// so it could keep the code clean
+				return new Promise((_resolve, _result) => {
+					// check if we need to delete the oldest snapshot
+					// to make room for a new one
+					if (snapshots && snapshots.length >= holdSnapshots) {
+						// calculate how many we need to delete for old snapshots
+						var amountOldSnapshotsToDelete = snapshots.length - holdSnapshots + 1;
+
+						// begin promise-syncloop here
+						console.log('Deleting old snapshots to make room for a new one');
+						mainCall(amountOldSnapshotsToDelete, deleteFn, snapshots)
+							.then(() => {
+								console.log('Deleted all old snapshots');
+								_resolve();	// proceed to next promise
+							})
+							.catch((err) => {
+								console.log(err);
+								_reject(); // reject
+							});
+					}
+					else {
+						_resolve();	// proceed to next promise
+					}
+				});
 			})
 			.then((result) => {
-				if (path == 2) {
-					console.log('Snapshoted a droplet successfully');
-					resolve();	// resolve this task
-				}
+				// its ok to snapshot a droplet now
+				console.log('Snapshotting for droplet (id:' + dropletId + ')');
+				return Promise.retry(3, dgApi.snapshotDroplet.bind(dgApi), 3000, dropletId);
+			})
+			.then((result) => {
+				console.log('Snapshotted successfully for droplet (id:' + dropletId + ')');
+				resolve();	// resolve this task
 			})
 			.catch((err) => {
 				console.log('Error operation for droplet (id: ' + dropletId + ') with reason ' + err.message);
