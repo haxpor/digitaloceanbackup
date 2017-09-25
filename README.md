@@ -23,7 +23,7 @@ Better yet, put above command to your `~/.bash_profile` as well to make it taken
 
 Clone this repo to your server.
 
-Configure `config.json` by supplying your Droplet ID, and number of snapshots to hold before deleting oldest ones. See section _Config File (`config.json`)_ for more info of its format.
+Create `config.json` file at the same level of `index.js` and configuring it by supplying your Droplet ID, and number of snapshots to hold before deleting oldest ones. See section _Config File (`config.json`)_ for more info of its format.
 
 Execute `node index.js`. You can hook it up via `crontab` as well. Also you can symlink `index.js` to your executable path. It's up to you.
 
