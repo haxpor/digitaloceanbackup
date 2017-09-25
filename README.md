@@ -63,7 +63,7 @@ Billing for snapshots also starts from snapshot creation time. Thus be decisive 
 
 # What's Next?
 
-- [x] Make getting Droplet Ids more comfortable and less effort to get. Ideally doesn't involve user to execute API by himself/herself.
+- [] Make getting Droplet Ids more comfortable and less effort to get. Ideally doesn't involve user to execute API by himself/herself.
 
 # License
 
