@@ -9,6 +9,12 @@ Check [DigitalOcean's Pricing](https://www.digitalocean.com/pricing/) for Snapsh
 
 Roughly as per my calculation, we can keep it as low as < $5 per month for Droplet with 30GB while keeping 3 latest snapshots. It's mostly a matter of how large the Droplet is.
 
+# Logic Behind
+
+The script will takes setting in `config.json` as for Droplet Ids and number of holding snapshots before deleting into effect. It will make a request to DigitalOcean API for list of all snapshots for target Droplet Id to determine whether it needs to delete old snapshots first before creating a new one (snapshoting a Droplet) or not.
+
+It can happen that such Droplet has many snapshots far exceeding the number of holding snapshots as set in `config.json`. Then it will try to delete all of old snapshots first before proceed to create a new one.
+
 # How to
 
 You first need to create DigitalOcean's access token by going to [API](https://cloud.digitalocean.com/settings/api/) menu.
@@ -22,6 +28,8 @@ export DIGITALOCEAN_ACCESS_TOKEN=<your access token>
 Better yet, put above command to your `~/.bash_profile` as well to make it taken into effective every bootup.
 
 Clone this repo to your server.
+
+Execute `npm install`.
 
 Create `config.json` file at the same level of `index.js` and configuring it by supplying your Droplet ID, and number of snapshots to hold before deleting oldest ones. See section _Config File (`config.json`)_ for more info of its format.
 
@@ -55,7 +63,7 @@ Billing for snapshots also starts from snapshot creation time. Thus be decisive 
 
 # What's Next?
 
-* Make getting Droplet Ids more comfortable and less effort to get. Ideally doesn't involve user to execute API by himself/herself.
+[x] Make getting Droplet Ids more comfortable and less effort to get. Ideally doesn't involve user to execute API by himself/herself.
 
 # License
 
