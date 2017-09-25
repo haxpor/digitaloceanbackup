@@ -1,0 +1,34 @@
+{
+  "name": "digitaloceanbackup",
+  "version": "1.0.0",
+  "description": "Automated server script to take snapshot for DigitalOcean server, keep only latest N snapshots to keep the cost low",
+  "main": "index.js",
+  "dependencies": {
+    "request": "^2.82.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haxpor/digitaloceanbackup.git"
+  },
+  "keywords": [
+    "digitalocean",
+    "dg",
+    "serer",
+    "script",
+    "backup",
+    "snapshot",
+    "automation",
+    "automated"
+  ],
+  "author": "Wasin Thonkaew",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/haxpor/digitaloceanbackup/issues"
+  },
+  "homepage": "https://github.com/haxpor/digitaloceanbackup#readme"
+}
