@@ -46,7 +46,8 @@ var deleteFn = function(i, ...args) {
 
 	return new Promise((resolve, reject) => {
 		// snapshots object is the same, thus we moving index ourselves via i
-		var oldestSnapshotId = snapshots[snapshots.length-1-i].id;
+		// snapshots is returned from API as sorted in ascending order
+		var oldestSnapshotId = snapshots[i].id;
 		// delete oldest snapshot
 		console.log('Deleting oldest snapshot (id:' + oldestSnapshotId + ')');
 		Promise.retry(3, dgApi.deleteSnapshotById.bind(dgApi), 3000, oldestSnapshotId)
