@@ -61,6 +61,10 @@ From my experience, 30GB in size of server will take almost 20 minutes. During t
 
 Billing for snapshots also starts from snapshot creation time. Thus be decisive of how frequently you backup, and how many old snapshots you would like to hold with this project. Larger in size snapshot will take longer time to create as well; although cost might be neglectible.
 
+Other misc notes
+
+* `per_page` param is with maximum of 200, the script doesn't supply any such param when makes a request. Thus support up to 200 snapshots.
+
 # What's Next?
 
 - [] Make getting Droplet Ids more comfortable and less effort to get. Ideally doesn't involve user to execute API by himself/herself.
