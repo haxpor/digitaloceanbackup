@@ -1,3 +1,5 @@
+<a href="https://github.com/haxpor/donate"><img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat" alt="donate"></a>
+
 # digitaloceanbackup
 Automated server script to take snapshot for DigitalOcean server, keep only latest N snapshots to keep cost low
 
