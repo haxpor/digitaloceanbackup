@@ -62,3 +62,6 @@ config.json
 
 # output directory
 out/
+
+# sync scripts
+scripts/sync.sh

@@ -11,6 +11,7 @@ const mainCall = require('./promise-syncloop.js');
 const readline = require('readline');
 const ConfigFile = require('./ConfigFile.js');
 const DGApi = require('./DGApi.js');
+const wxNotify = require('./notify/wechatNotify.js');
 
 var configFile = new ConfigFile(__dirname + '/config.json');
 
@@ -127,8 +128,26 @@ if (dropletIds) {
 	mainCall(dropletIds.length, workerFn)
 		.then(() => {
 			console.log('all done!');
+
+			// notify via WeChat
+			wxNotify.notifySuccessMessage()
+				.then((res) => {
+					console.log('Succesfully notified via WeChat message');
+				})
+				.catch((err) => {
+					console.log('Can\'t notify success message via WeChat: ' + err.message);
+				});
 		})
 		.catch((err) => {
 			console.log(err);
+
+			// notify via WeChat
+			wxNotify.notifyFailMessage(err.message)
+				.then((res) => {
+					console.log('Succesfully notified error message via WeChat message');
+				})
+				.catch((err) => {
+					console.log('Can\'t notify error message via WeChat: ' + err.message);
+				});
 		});
 }

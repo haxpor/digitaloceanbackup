@@ -17,23 +17,47 @@ It can happen that such Droplet has many snapshots far exceeding the number of h
 
 # How to
 
+## Main Settings
+
 You first need to create DigitalOcean's access token by going to [API](https://cloud.digitalocean.com/settings/api/) menu.
 
 Then copy that access token, and define on your server's environment variable via
 
-```
-export DIGITALOCEAN_ACCESS_TOKEN=<your access token>
-```
+* `DIGITALOCEAN_ACCESS_TOKEN=<your access token>`
 
-Better yet, put above command to your `~/.bash_profile` as well to make it taken into effective every bootup.
+## Notifying of Backing up Result (optional)
 
-Clone this repo to your server.
+To be able to notify successful, or failed message to your WeChat account via your WeChat Official/Subscription account with granted permission to send templated message. Then defines all of the following settings.
 
-Execute `npm install`.
+* `WECHAT_APPID=<your app id>`
 
-Create `config.json` file at the same level of `index.js` and configuring it by supplying your Droplet ID, and number of snapshots to hold before deleting oldest ones. See section _Config File (`config.json`)_ for more info of its format.
+	Check at [mp.weixin.qq.com](https://mp.weixin.qq.com) for your WeChat official / subscription account.
 
-Execute `node index.js`. You can hook it up via `crontab` as well. Also you can symlink `index.js` to your executable path. It's up to you.
+* `WECHAT_APPSECRET=<your app secret>`
+
+	Check at [mp.weixin.qq.com](https://mp.weixin.qq.com) for your WeChat official / subscription account.
+
+* `WECHAT_SU_OPENID=<user open id to receive msgs>`
+
+	You can find out what is your open id attached to your WeChat official / subscription account you followed by listing followers list via [Follow List API](http://open.wechat.com/cgi-bin/newreadtemplate?t=overseas_open/docs/oa/user/follower-list#user_follower-list).
+
+* `WECHAT_SUCCESS_TEMPLATE_ID=<your template id>`
+
+	Check at [mp.weixin.qq.com](https://mp.weixin.qq.com) for Template Message section (you might need to apply to grant this ability). Then add a template that has at least 2 **keywords**, with 1 **remark**.
+
+* `WECHAT_FAIL_TEMPLATE_ID=<your template id>`
+
+	Check at [mp.weixin.qq.com](https://mp.weixin.qq.com) for Template Message section (you might need to apply to grant this ability). Then add a template that has at least 4 **keywords**, with 1 **remark**.
+
+You need to set all of above environment variables in order to make it works.
+
+## Run the Program
+
+* Clone this repo to your server.
+* Execute `npm install`.
+* Create `config.json` file at the same level of `index.js` and configuring it by supplying your Droplet ID, and number of snapshots to hold before deleting oldest ones. See section _Config File (`config.json`)_ for more info of its format.
+* Configure environment variables as needed according to section of _Main settings_ and _Notifying of Backing up Result (optional)_.
+* Execute `node index.js`. You can hook it up via `crontab` as well. Also you can symlink `index.js` to your executable path. It's up to you.
 
 # Config File (`config.json`)
 
