@@ -130,7 +130,7 @@ if (dropletIds) {
 			console.log('all done!');
 
 			// notify via WeChat
-			wechatNotify.notifySuccessMessage()
+			wechatNotify.notifySuccessMessage('digitaloceanbackup succeeded', 'Backing up is successful', 'No further action needed.')
 				.then((res) => {
 					console.log('Succesfully notified via WeChat message');
 				})
@@ -142,7 +142,7 @@ if (dropletIds) {
 			console.log(err);
 
 			// notify via WeChat
-			wechatNotify.notifyFailMessage(err.message)
+			wechatNotify.notifyFailMessage("digitaloceanbackup failed", 'Backing up', 'High', err.message, 'Check server log for this process ASAP!')
 				.then((res) => {
 					console.log('Succesfully notified error message via WeChat message');
 				})

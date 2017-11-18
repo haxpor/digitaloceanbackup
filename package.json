@@ -6,7 +6,7 @@
   "dependencies": {
     "request": "^2.82.0",
     "request-promise-native": "^1.0.5",
-    "wechat-notifier": "^1.0.1"
+    "wechat-notifier": "^1.1.0"
   },
   "devDependencies": {},
   "scripts": {
@@ -31,5 +31,6 @@
   "bugs": {
     "url": "https://github.com/haxpor/digitaloceanbackup/issues"
   },
-  "homepage": "https://github.com/haxpor/digitaloceanbackup#readme"
+  "homepage": "https://github.com/haxpor/digitaloceanbackup#readme",
+  "private": true
 }
