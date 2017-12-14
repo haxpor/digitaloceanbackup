@@ -58,7 +58,7 @@ var deleteFn = function(i, ...args) {
 			})
 			.catch((_err) => {
 				console.log(_err.message);
-				reject(); // reject this task
+				reject(_err); // reject this task
 			});
 	});
 }
@@ -98,8 +98,8 @@ var workerFn = function(i, ...args) {
 								_resolve();	// proceed to next promise
 							})
 							.catch((err) => {
-								console.log(err);
-								_reject(); // reject
+								console.log(err.message);
+								_reject(err); // reject
 							});
 					}
 					else {
@@ -118,7 +118,7 @@ var workerFn = function(i, ...args) {
 			})
 			.catch((err) => {
 				console.log('Error operation for droplet (id: ' + dropletId + ') with reason ' + err.message);
-				reject();	// reject this task
+				reject(err);	// reject this task
 			});
 	});
 }
@@ -139,10 +139,10 @@ if (dropletIds) {
 				});
 		})
 		.catch((err) => {
-			console.log(err);
+			console.log(err.message);
 
 			// notify via WeChat
-			wechatNotify.notifyFailMessage("digitaloceanbackup failed", 'Backing up', 'High', err.message, 'Check server log for this process ASAP!')
+			wechatNotify.notifyFailMessage("digitaloceanbackup failed", 'Backing up', 'High', err.message, 'Check server log.')
 				.then((res) => {
 					console.log('Succesfully notified error message via WeChat message');
 				})
